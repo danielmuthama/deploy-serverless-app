@@ -235,6 +235,15 @@ resources:
         RestApiId:
           Ref: ApiGatewayRestApi
 
+    RequestBodyValidator:
+      Type: AWS::ApiGateway::RequestValidator
+      Properties:
+        Name: 'request-body-validator'
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        ValidateRequestBody: true
+        ValidateRequestParameters: false
+        
     # DynamoDB
     TodosTable:
       Type: AWS::DynamoDB::Table
