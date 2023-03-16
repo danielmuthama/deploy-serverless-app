@@ -22,6 +22,7 @@ provider:
     ATTACHMENTS_S3_BUCKET: udacity-todos-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
 
+# Tracing 
   tracing:
     lambda: true
     apiGateway: true
@@ -63,13 +64,14 @@ custom:
               type: string
             done:
               type: boolean
-              
+
 # Functions              
 functions:
 
   Auth:
     handler: src/lambda/auth/auth0Authorizer.handler
 
+# Get Todo
   GetTodos:
     handler: src/lambda/http/getTodos.handler
     events:
@@ -97,7 +99,7 @@ functions:
           - xray:PutTraceSegments
         Resource:
           - "*"
-
+# Create Todo
   CreateTodo:
     handler: src/lambda/http/createTodo.handler
     events:
@@ -125,7 +127,7 @@ functions:
           - xray:PutTraceSegments
         Resource:
           - "*"
-
+# update Todo
   UpdateTodo:
     handler: src/lambda/http/updateTodo.handler
     events:
@@ -155,6 +157,7 @@ functions:
         Resource:
           - "*"
 
+# Delete TODO
   DeleteTodo:
     handler: src/lambda/http/deleteTodo.handler
     events:
@@ -184,6 +187,7 @@ functions:
         Resource:
           - "*"
 
+# GenerateUp Load URl
   GenerateUploadUrl:
     handler: src/lambda/http/generateUploadUrl.handler
     events:
@@ -276,6 +280,7 @@ resources:
                 - HEAD
               MaxAge: 3000
 
+# Attachment Bucket Policy
     AttachmentsBucketPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:
