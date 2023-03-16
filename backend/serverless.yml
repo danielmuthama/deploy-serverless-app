@@ -1,3 +1,5 @@
+org: danielmuthama
+app: serverless
 service:
   name: serverless-todo-app
 
