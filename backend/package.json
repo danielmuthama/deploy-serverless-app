@@ -10,6 +10,7 @@
     "http-errors": "^1.7.2",
     "jsonwebtoken": "^8.5.1",
     "middy": "^0.27.0",
+    "serverless": "^3.28.1",
     "source-map-support": "^0.5.11",
     "uuid": "^3.3.2",
     "winston": "^3.2.1"
@@ -18,7 +19,7 @@
     "@types/aws-lambda": "^8.10.17",
     "@types/jsonwebtoken": "^8.3.2",
     "@types/node": "^10.14.4",
-    "aws-sdk": "^2.433.0",
+    "aws-sdk": "^2.1337.0",
     "serverless-aws-documentation": "^1.1.0",
     "serverless-iam-roles-per-function": "^1.0.4",
     "serverless-plugin-canary-deployments": "^0.4.7",
