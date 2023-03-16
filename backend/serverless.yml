@@ -16,11 +16,10 @@ provider:
   region: ${opt:region, 'us-east-2'}
 
   environment:
-    TODOS_TABLE: Todos-${self:provider.stage}
+    TODOS_TABLE: udacity-todos-${self:provider.stage}
     TODOS_BY_USER_INDEX: TodosByUserIndex
-    ATTACHMENTS_S3_BUCKET: todos-attachments-${self:provider.stage}
+    ATTACHMENTS_S3_BUCKET: udacity-todos-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
-    AUTH_0_JWKS_URL: https://dev-cr9isr4f.eu.auth0.com/.well-known/jwks.json
 
   tracing:
     lambda: true
