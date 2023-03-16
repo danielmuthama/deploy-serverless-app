@@ -16,6 +16,7 @@ provider:
   region: ${opt:region, 'us-east-2'}
 
   environment:
+    PROJECT_NAME: udacity-todos
     TODOS_TABLE: udacity-todos-${self:provider.stage}
     TODOS_BY_USER_INDEX: TodosByUserIndex
     ATTACHMENTS_S3_BUCKET: udacity-todos-${self:provider.stage}
@@ -25,6 +26,45 @@ provider:
     lambda: true
     apiGateway: true
 
+
+    # Custom
+custom:
+  documentation:
+    api:
+      info:
+        version: '1.0.0'
+        title: serverless-api
+        description: serverless-api
+    models:
+      - name: CreateTodoRequest
+        contentType: "application/json"
+        schema:
+          required:
+            - name
+            - dueDate
+          properties:
+            name:
+              minLength: 1
+              type: string
+            dueDate:
+              type: string
+      - name: UpdateTodoRequest
+        contentType: "application/json"
+        schema:
+          required:
+            - name
+            - dueDate
+            - done
+          properties:
+            name:
+              minLength: 1
+              type: string
+            dueDate:
+              type: string
+            done:
+              type: boolean
+              
+# Functions              
 functions:
 
   Auth:
