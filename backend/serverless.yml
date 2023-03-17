@@ -2,6 +2,8 @@
 # app: serverless-todo-app
 # service: serverless-todo-app
 # frameworkVersion: '3.28.1'
+# configValidationMode: error
+
 
 # # Plugins
 # plugins:
@@ -276,6 +278,7 @@ org: danielmuthama
 app: serverless-todo-app
 service: serverless-todo-app
 frameworkVersion: '3.19.0'
+# configValidationMode: error
 
 plugins:
   - serverless-webpack
@@ -284,7 +287,7 @@ plugins:
 
 provider:
   name: aws
-  runtime: nodejs16.x
+  runtime: nodejs14.x
   #lambdaHashingVersion: '20201221'
   stage: dev
   region: us-east-1
