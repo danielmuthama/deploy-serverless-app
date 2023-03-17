@@ -2,8 +2,8 @@ import 'source-map-support/register'
 
 import * as AWS from 'aws-sdk'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
-import * as AWSXRay from 'aws-xray-sdk'
-
+// import * as AWSXRay from 'aws-xray-sdk'
+const AWSXRay = require('aws-xray-sdk')
 import { TodoItem } from '../models/TodoItem'
 import { TodoUpdate } from '../models/TodoUpdate'
 import { createLogger } from '../utils/logger'
