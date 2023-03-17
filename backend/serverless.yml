@@ -1,324 +1,6 @@
-# org: danielmuthama
-# app: serverless
-# service: serverless-todo-app
-
-# plugins:
-#   - serverless-webpack
-#   - serverless-reqvalidator-plugin
-#   - serverless-iam-roles-per-function
-#   - serverless-aws-documentation
-
-# provider:
-#   name: aws
-#   runtime: nodejs12.x
-#   stage: ${opt:stage, 'dev'}
-#   region: ${opt:region, 'us-east-2'}
-
-#   environment:
-#     PROJECT_NAME: udacity-todos
-#     TODOS_TABLE: udacity-todos-${self:provider.stage}
-#     TODOS_BY_USER_INDEX: TodosByUserIndex
-#     ATTACHMENTS_S3_BUCKET: udacity-todos-${self:provider.stage}
-#     SIGNED_URL_EXPIRATION: 300
-
-# # Tracing 
-#   tracing:
-#     lambda: true
-#     apiGateway: true
-
-
-#     # Custom
-# custom:
-#   documentation:
-#     api:
-#       info:
-#         version: '1.0.0'
-#         title: serverless-api
-#         description: serverless-api
-#     models:
-#       - name: CreateTodoRequest
-#         contentType: "application/json"
-#         schema:
-#           required:
-#             - name
-#             - dueDate
-#           properties:
-#             name:
-#               minLength: 1
-#               type: string
-#             dueDate:
-#               type: string
-#       - name: UpdateTodoRequest
-#         contentType: "application/json"
-#         schema:
-#           required:
-#             - name
-#             - dueDate
-#             - done
-#           properties:
-#             name:
-#               minLength: 1
-#               type: string
-#             dueDate:
-#               type: string
-#             done:
-#               type: boolean
-
-# # Functions              
-# functions:
-
-#   Auth:
-#     handler: src/lambda/auth/auth0Authorizer.handler
-
-# # Get Todo
-#   GetTodos:
-#     handler: src/lambda/http/getTodos.handler
-#     events:
-#       - http:
-#           method: get
-#           path: todos
-#           cors: true
-#           auth: Auth
-#     iamRoleStatements:
-#       - Effect: Allow
-#         Action:
-#           - dynamodb:Query
-#         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.TODOS_BY_USER_INDEX}
-#       - Effect: Allow
-#         Action:
-#           - xray:GetSamplingRules
-#           - xray:GetSamplingTargets
-#           - xray:GetSamplingStatisticSummaries
-#           - xray:BatchGetTraces
-#           - xray:GetServiceGraph
-#           - xray:GetTraceGraph
-#           - xray:GetTraceSummaries
-#           - xray:GetGroups
-#           - xray:GetGroup
-#           - xray:PutTraceSegments
-#         Resource:
-#           - "*"
-# # Create Todo
-#   CreateTodo:
-#     handler: src/lambda/http/createTodo.handler
-#     events:
-#       - http:
-#           method: post
-#           path: todos
-#           cors: true
-#           auth: Auth
-#     iamRoleStatements:
-#       - Effect: Allow
-#         Action:
-#           - dynamodb:PutItem
-#         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
-#       - Effect: Allow
-#         Action:
-#           - xray:GetSamplingRules
-#           - xray:GetSamplingTargets
-#           - xray:GetSamplingStatisticSummaries
-#           - xray:BatchGetTraces
-#           - xray:GetServiceGraph
-#           - xray:GetTraceGraph
-#           - xray:GetTraceSummaries
-#           - xray:GetGroups
-#           - xray:GetGroup
-#           - xray:PutTraceSegments
-#         Resource:
-#           - "*"
-# # update Todo
-#   UpdateTodo:
-#     handler: src/lambda/http/updateTodo.handler
-#     events:
-#       - http:
-#           method: patch
-#           path: todos/{todoId}
-#           cors: true
-#           auth: Auth
-#     iamRoleStatements:
-#       - Effect: Allow
-#         Action:
-#           - dynamodb:UpdateItem
-#           - dynamodb:GetItem
-#         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
-#       - Effect: Allow
-#         Action:
-#           - xray:GetSamplingRules
-#           - xray:GetSamplingTargets
-#           - xray:GetSamplingStatisticSummaries
-#           - xray:BatchGetTraces
-#           - xray:GetServiceGraph
-#           - xray:GetTraceGraph
-#           - xray:GetTraceSummaries
-#           - xray:GetGroups
-#           - xray:GetGroup
-#           - xray:PutTraceSegments
-#         Resource:
-#           - "*"
-
-# # Delete TODO
-#   DeleteTodo:
-#     handler: src/lambda/http/deleteTodo.handler
-#     events:
-#       - http:
-#           method: delete
-#           path: todos/{todoId}
-#           cors: true
-#           auth: Auth
-#     iamRoleStatements:
-#       - Effect: Allow
-#         Action:
-#           - dynamodb:DeleteItem
-#           - dynamodb:GetItem
-#         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
-#       - Effect: Allow
-#         Action:
-#           - xray:GetSamplingRules
-#           - xray:GetSamplingTargets
-#           - xray:GetSamplingStatisticSummaries
-#           - xray:BatchGetTraces
-#           - xray:GetServiceGraph
-#           - xray:GetTraceGraph
-#           - xray:GetTraceSummaries
-#           - xray:GetGroups
-#           - xray:GetGroup
-#           - xray:PutTraceSegments
-#         Resource:
-#           - "*"
-
-# # GenerateUp Load URl
-#   GenerateUploadUrl:
-#     handler: src/lambda/http/generateUploadUrl.handler
-#     events:
-#       - http:
-#           method: post
-#           path: todos/{todoId}/attachment
-#           cors: true
-#           auth: Auth
-#     iamRoleStatements:
-#       - Effect: Allow
-#         Action:
-#           - s3:PutObject
-#         Resource: arn:aws:s3:::${self:provider.environment.ATTACHMENTS_S3_BUCKET}/*
-#       - Effect: Allow
-#         Action:
-#           - dynamodb:UpdateItem
-#           - dynamodb:GetItem
-#         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
-#       - Effect: Allow
-#         Action:
-#           - xray:GetSamplingRules
-#           - xray:GetSamplingTargets
-#           - xray:GetSamplingStatisticSummaries
-#           - xray:BatchGetTraces
-#           - xray:GetServiceGraph
-#           - xray:GetTraceGraph
-#           - xray:GetTraceSummaries
-#           - xray:GetGroups
-#           - xray:GetGroup
-#           - xray:PutTraceSegments
-#         Resource:
-#           - "*"
-
-# resources:
-#   Resources:
-#     # API Gateway
-#     GatewayResponseDefault4XX:
-#       Type: AWS::ApiGateway::GatewayResponse
-#       Properties:
-#         ResponseParameters:
-#           gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
-#           gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-#           gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST'"
-#         ResponseType: DEFAULT_4XX
-#         RestApiId:
-#           Ref: ApiGatewayRestApi
-
-#     RequestBodyValidator:
-#       Type: AWS::ApiGateway::RequestValidator
-#       Properties:
-#         Name: 'request-body-validator'
-#         RestApiId:
-#           Ref: ApiGatewayRestApi
-#         ValidateRequestBody: true
-#         ValidateRequestParameters: false
-
-#     GatewayResponseDefault5XX:
-#       Type: AWS::ApiGateway::GatewayResponse
-#       Properties:
-#         ResponseParameters:
-#           gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
-#           gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-#           gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST,DELETE,PATCH,PUT'"
-#         ResponseType: DEFAULT_5XX
-#         RestApiId:
-#           Ref: ApiGatewayRestApi     
-
-#     # DynamoDB
-#     TodosTable:
-#       Type: AWS::DynamoDB::Table
-#       Properties:
-#         AttributeDefinitions:
-#           - AttributeName: todoId
-#             AttributeType: S
-#           - AttributeName: userId
-#             AttributeType: S
-#           - AttributeName: createdAt
-#             AttributeType: S
-#         KeySchema:
-#           - AttributeName: todoId
-#             KeyType: HASH
-#         BillingMode: PAY_PER_REQUEST
-#         TableName: ${self:provider.environment.TODOS_TABLE}
-#         GlobalSecondaryIndexes:
-#           - IndexName: ${self:provider.environment.TODOS_BY_USER_INDEX}
-#             KeySchema:
-#               - AttributeName: userId
-#                 KeyType: HASH
-#               - AttributeName: createdAt
-#                 KeyType: RANGE
-#             Projection:
-#               ProjectionType: ALL
-
-#     # S3 Bucket
-#     AttachmentsBucket:
-#       Type: AWS::S3::Bucket
-#       Properties:
-#         BucketName: ${self:provider.environment.ATTACHMENTS_S3_BUCKET}
-#         CorsConfiguration:
-#           CorsRules:
-#             - AllowedOrigins:
-#                 - '*'
-#               AllowedHeaders:
-#                 - '*'
-#               AllowedMethods:
-#                 - GET
-#                 - PUT
-#                 - POST
-#                 - DELETE
-#                 - HEAD
-#               MaxAge: 3000
-
-# # Attachment Bucket Policy
-#     AttachmentsBucketPolicy:
-#       Type: AWS::S3::BucketPolicy
-#       Properties:
-#         PolicyDocument:
-#           Id: MyPolicy
-#           Version: "2012-10-17"
-#           Statement:
-#             - Sid: PublicReadForGetBucketObjects
-#               Effect: Allow
-#               Principal: '*'
-#               Action: 's3:GetObject'
-#               Resource: 'arn:aws:s3:::${self:provider.environment.ATTACHMENTS_S3_BUCKET}/*'
-#         Bucket: !Ref AttachmentsBucket
-
-
-
 org: danielmuthama
-app: serverless
-service: serverless
+app: serverless-todo-app
+service: serverless-todo-app
 
 plugins:
   - serverless-webpack
@@ -338,9 +20,9 @@ provider:
     apiGateway: true
 
   environment:
-    PROJECT_NAME: udacity
-    TODOS_TABLE: udacity-serverless-application-todo-${self:provider.stage}
-    S3_BUCKET_NAME: udacity-serverless-application-todo-${self:provider.stage}
+    PROJECT_NAME: serverless
+    TODOS_TABLE: serverless-todo-app-${self:provider.stage}
+    S3_BUCKET_NAME: serverless-todo-app-${self:provider.stage}
 
 custom:
   documentation:
@@ -384,7 +66,6 @@ functions:
   Auth:
     handler: src/lambda/auth/auth0Authorizer.handler
 
-  # TODO: Configure this function
   GetTodos:
     handler: src/lambda/http/getTodos.handler
     events:
@@ -405,7 +86,6 @@ functions:
         Resource: 
           - '*'
 
-  # TODO: Configure this function
  
   CreateTodo:
     handler: src/lambda/http/createTodo.handler
@@ -433,7 +113,6 @@ functions:
         Resource: 
           - '*'
 
-  # TODO: Configure this function
   UpdateTodo:
     handler: src/lambda/http/updateTodo.handler
     events:
@@ -460,7 +139,6 @@ functions:
         Resource: 
           - '*'
 
-  # DELETE: Configure this function
   DeleteTodo:
     handler: src/lambda/http/deleteTodo.handler
     events:
@@ -481,7 +159,6 @@ functions:
         Resource: 
           - '*'
 
-  # POST: Configure this function
   GenerateUploadUrl:
     handler: src/lambda/http/generateUploadUrl.handler
     events:
@@ -500,7 +177,6 @@ functions:
 
 resources:
   Resources:
-    # TODO: Add any necessary AWS resources
     TodosTable:
       Type: AWS::DynamoDB::Table
       Properties:
