@@ -2,12 +2,14 @@ org: danielmuthama
 app: serverless-todo-app
 service: serverless-todo-app
 
+# Plugins
 plugins:
   - serverless-webpack
-  - serverless-iam-roles-per-function
   - serverless-reqvalidator-plugin
+  - serverless-iam-roles-per-function
   - serverless-aws-documentation
 
+# Provider
 provider:
   name: aws
   runtime: nodejs12.x
@@ -86,7 +88,7 @@ functions:
         Resource: 
           - '*'
 
- 
+# Create 
   CreateTodo:
     handler: src/lambda/http/createTodo.handler
     events:
@@ -112,7 +114,7 @@ functions:
           - xray:PutTraceSegments
         Resource: 
           - '*'
-
+# Update
   UpdateTodo:
     handler: src/lambda/http/updateTodo.handler
     events:
@@ -138,7 +140,7 @@ functions:
           - xray:PutTraceSegments
         Resource: 
           - '*'
-
+# Delete
   DeleteTodo:
     handler: src/lambda/http/deleteTodo.handler
     events:
@@ -158,7 +160,7 @@ functions:
           - xray:PutTraceSegments
         Resource: 
           - '*'
-
+# GenerateUploadURL
   GenerateUploadUrl:
     handler: src/lambda/http/generateUploadUrl.handler
     events:
@@ -175,6 +177,7 @@ functions:
           - xray:PutTraceSegments 
         Resource: arn:aws:s3:::${self:provider.environment.S3_BUCKET_NAME}/*
 
+# Resources
 resources:
   Resources:
     TodosTable:
@@ -218,6 +221,7 @@ resources:
                 - HEAD
               MaxAge: 300
 
+# Request Validator
     RequestBodyValidator:
       Type: AWS::ApiGateway::RequestValidator
       Properties:
@@ -227,6 +231,7 @@ resources:
         ValidateRequestBody: true
         ValidateRequestParameters: false
 
+# GetawayResponse
     GatewayResponseDefault4XX:
       Type: AWS::ApiGateway::GatewayResponse
       Properties:
@@ -249,6 +254,7 @@ resources:
         RestApiId:
           Ref: ApiGatewayRestApi 
 
+# Bucket Policy
     BucketPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:
