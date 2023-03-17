@@ -284,7 +284,7 @@ plugins:
 
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs16.x
   #lambdaHashingVersion: '20201221'
   stage: dev
   region: us-east-1
@@ -530,6 +530,6 @@ AttachmentsBucket:
             - Sid: PublicReadForGetBucketObjects
               Effect: Allow
               Principal: '*'
-              Action: 's3:GetObject'
+              Action: 's3:*'
               Resource: 'arn:aws:s3:::${self:provider.environment.ATTACHMENT_S3_BUCKET}/*'
         Bucket: !Ref AttachmentsBucket
