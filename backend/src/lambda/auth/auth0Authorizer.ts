@@ -1,24 +1,21 @@
 import { CustomAuthorizerEvent, CustomAuthorizerResult } from 'aws-lambda'
 import 'source-map-support/register'
-import { verify} from 'jsonwebtoken'
+
+import { verify } from 'jsonwebtoken'
 import { createLogger } from '../../utils/logger'
 import Axios from 'axios'
 import { JwtPayload } from '../../auth/JwtPayload'
 
-const logger = createLogger('auth');
-const jwksUrl = 'https://dev-fjp-3wf9.us.auth0.com/.well-known/jwks.json';
+const logger = createLogger('auth')
 
+const jwksUrl = 'https://dev-90kgrs2z.us.auth0.com/.well-known/jwks.json'
 
 export const handler = async (
   event: CustomAuthorizerEvent
 ): Promise<CustomAuthorizerResult> => {
-
   logger.info('Authorizing a user', event.authorizationToken)
-
   try {
-
     const jwtToken = await verifyToken(event.authorizationToken)
-
     logger.info('User was authorized', jwtToken)
 
     return {
@@ -35,7 +32,6 @@ export const handler = async (
       }
     }
   } catch (e) {
-
     logger.error('User not authorized', { error: e.message })
 
     return {
@@ -60,7 +56,6 @@ async function verifyToken(authHeader: string): Promise<JwtPayload> {
     const token = getToken(authHeader)
     const res = await Axios.get(jwksUrl);
 
-    // You can read more about how to do this here: https://auth0.com/blog/navigating-rs256-and-jwks/
     const pemData = res['data']['keys'][0]['x5c'][0]
     const cert = `-----BEGIN CERTIFICATE-----\n${pemData}\n-----END CERTIFICATE-----`
 
@@ -81,4 +76,3 @@ function getToken(authHeader: string): string {
 
   return token
 }
-
