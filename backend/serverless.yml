@@ -1,5 +1,5 @@
 # org: danielmuthama
-# app: serverless
+# app: serverless-todo-app
 # service: serverless-todo-app
 # frameworkVersion: ^3.28.1
 
@@ -24,7 +24,7 @@
 #   environment:
 #     PROJECT_NAME: serverless-todo-app
 #     TODOS_TABLE: Todos-${self:provider.stage}
-#     S3_BUCKET_NAME: serverless-app-${self:provider.stage}
+#     S3_BUCKET_NAME: serverless-todo-app-${self:provider.stage}
 
 # custom:
 #   documentation:
@@ -267,7 +267,7 @@ provider:
   name: aws
   runtime: nodejs12.x
   stage: ${opt:stage, 'dev'}
-  region: ${opt:region, 'us-east-2'}
+  region: ${opt:region, 'us-east-1'}
   
   tracing: 
     lambda: true
@@ -276,7 +276,7 @@ provider:
   environment:
     PROJECT_NAME: serverless
     TODOS_TABLE: serverless-todo-app-${self:provider.stage}
-    S3_BUCKET_NAME: serverless-todo-app-${self:provider.stage}
+    S3_BUCKET_NAME: serverless-todo-appli-${self:provider.stage}
 
 custom:
   documentation:
