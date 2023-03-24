@@ -2,8 +2,8 @@
 
 
 
-![ REACT APP](images/../../images/1.png )
-![ REACT APP](images/../../images/2.png )
+![ REACT APP](/images/1.png )
+![ REACT APP](/images/2.png )
 # Functionality of the application
 
 This application will allow creating/removing/updating/fetching TODO items. Each TODO item can optionally have an attachment image. Each user only has access to TODO items that he/she has created.
