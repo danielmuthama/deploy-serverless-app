@@ -317,10 +317,24 @@ custom:
               type: string
             done:
               type: boolean
-          
+
+#logs
+logs:
+  restApi: true
+
+
+#iamrole
+iam:
+  role:
+    statements:
+      - Effect: Allow
+        Action:
+          - xray:PutTelemetryRecords
+          - xray:PutTraceSegments
+        Resource: "*"
+
 
 functions:
-
   Auth:
     handler: src/lambda/auth/auth0Authorizer.handler
   GetTodos:
