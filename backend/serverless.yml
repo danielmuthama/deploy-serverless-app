@@ -269,9 +269,10 @@ provider:
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
 
-  Globals: 
+Globals: 
   Function:
     Tracing: Active
+
   
   tracing: 
     lambda: true
@@ -332,7 +333,6 @@ iam:
           - xray:PutTelemetryRecords
           - xray:PutTraceSegments
         Resource: "*"
-
 
 functions:
   Auth:
