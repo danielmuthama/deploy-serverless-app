@@ -272,7 +272,8 @@ provider:
 Globals: 
   Function:
     Tracing: Active
-
+  Api:                    
+    TracingEnabled: true 
   
   tracing: 
     lambda: true
